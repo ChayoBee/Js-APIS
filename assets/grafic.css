@@ -24,6 +24,15 @@
   font-family: Arial;
   font-size: 20px;
   color: white;
+  text-align: center;
+  padding-bottom: 10px;
+}
+.body .container .titles {
+  font-family: Arial;
+  font-size: 20px;
+  color: #1A5276;
+  text-align: center;
+  padding-bottom: 10px;
 }
 .body .container .caja {
   display: flex;
@@ -31,5 +40,24 @@
   align-items: center;
   flex-direction: column;
   gap: 20px;
+  padding: 25px;
   background-color: #F8C471;
+}
+.body .container input {
+  height: 25px;
+}
+.body .container .tipo {
+  height: 25px;
+  width: 200px;
+}
+.body .container .a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.body .container .a .boton {
+  height: 50px;
+  width: 100px;
+  margin: 10px;
 }/*# sourceMappingURL=grafic.css.map */

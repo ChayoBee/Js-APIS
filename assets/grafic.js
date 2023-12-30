@@ -1,25 +1,44 @@
-const endpoint = "https://mindicador.cl/api/";
+const inputCLP = document.getElementById('inputPesoChile');
+const selector = document.getElementById('conversor');
+const btn = document.getElementById('btn');
+const answer = document.getElementById('answer');
+
+const endpoint = "https://mindicador.cl/api";
 let myChart = null;
+
+//------------------------------------------------------------
+selector.addEventListener('change', monedaSelec);
+btn.addEventListener('click', btnConversor);
+
+inputCLP.addEventListener('input', function(){
+    if (this.value.length > 9){
+        this.value = this.value.slice(0.9);
+    };
+});
+//------------------------------------------------------------
+
+//Obtener datos y filtro monedas
 
 async function getMonedas(url){
     try {
         const resp = await fetch(url);
         const {dolar, uf, euro} = await resp.json();
-        return [dolar,uf,euro];
+        return [dolar, uf, euro];
     } catch (error) {
         window.alert('¡Uy, algo salió mal!');
     }
 };
 
+//Render Opciones
+
 async function renderResult(url) {
     try {
-        const selector = document.getElementById('conversor')
         const monedas = await getMonedas(url);
         
         monedas.forEach((moneda) =>{
             const option = document.createElement('option');
-            option.value = moneda['codigo'];
-            option.innerText = moneda['nombre'];
+            option.value = moneda.codigo;
+            option.innerText = moneda.nombre;
             
             selector.appendChild(option);
         });
@@ -28,41 +47,51 @@ async function renderResult(url) {
     };
 };
 
-async function inputPeso(url) {
+//Consultar API moneda seleccionada
+
+async function monedaSelec() {
+    let selectCoin = selector.value;
+    let selectURL = `${endpoint}/${selectCoin}`;
+    
     try {
-        const inputPesoChile = document.getElementById('inputPesoChile').value;
-       /* const monedas = await getMonedas(url);
-
-        monedas.forEach((moneda) => {
-            const resultado = document.createElement('string');
-            resultado.value = moneda ['codigo'];
-            resultado.innerText = moneda['nombre'];
-
-            inputPesoChile.appendChild(resultado);
-        });*/
+        const resp = await fetch(selectURL);
+        const data = await resp.json();
+        return data;
     } catch (error) {
-        window.alert('¡Uy, algo salió mal!');
+        window.alert('Por favor, elije una moneda a convertir');
     };
 };
 
-async function monedaSelec(url, moneID) {
+// Función del Botón
+
+async function btnConversor(){
     try {
-        if (moneID) {
-            const moneda = await fetch(`${url}${moneID}`);
-            const {serie} = await moneda.json();
-            const [{ valor: moneValor }] = serie;
-            return moneValor;
+        if (selector.value != '0'){
+        const ValorCLP = parseInt(inputCLP.value);
+        const selectCoin = await monedaSelec();
+        const selectValor = selectCoin.serie[0].valor;
+
+        if (ValorCLP > 0){
+            const conversion = (ValorCLP / selectValor).toFixed(2);
+      spanResult.innerText = `${selectedCurrency.codigo === 'euro' ? '€' : '$'}${conversion}`
+            answer.innerText = `${selectCoin.codigo === 'euro' ? '€' : '$'} ${conversion}`;
+            renderGrafic();
         } else {
-            alert('Selecciona una moneda');
-        }
+            window.alert('Ingresa un número válido');
+        };
+    };
     } catch (error) {
-        window.alert('¡Uy, algo salió mal!');
+       window.alert('¡Uy, algo salió mal!');
     };
 };
 
-async function getCreatDataChart(url, moneID) {
-    const moneda = await fetch(`${url}${moneID}`);
-    const {serie} = await moneda.json();
+//-------------------------------------------------------------
+
+//Grafico
+
+async function getCreatDataChart() {
+    const resp = await monedaSelec();
+    const {serie} = await resp.json();
 
     const labels = serie.map(({fecha}) => {
         return fecha;
@@ -99,17 +128,5 @@ async function renderGrafic(){
 
     myChart = new Chart(canvas, config);
 };
-
-document.getElementById('btn').addEventListener('click', async (event) => {
-    const optionSelect = document.getElementById('conversor').value;
-    const moneValor = await monedaSelec(endpoint, optionSelect);
-
-    const inputPesos =  await inputPeso(endpoint, optionSelect);
-
-    const conversion = (inputPesos / moneValor).toFixed(2);
-
-    //console.log(conversion);
-    renderGrafic();
-});
 
 renderResult(endpoint);

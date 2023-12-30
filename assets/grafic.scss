@@ -10,10 +10,10 @@
     align-items: $a;
 };
 
-@mixin font ($t){
+@mixin font ($t, $c){
     font-family: Arial;
     font-size: $t;
-    color: white;
+    color: $c;
 };
 
 .body {
@@ -27,13 +27,37 @@
         height: 400px;
         margin-bottom: 20px;
         .title {
-            @include font(20px);
+            @include font(20px, white);
+            text-align: center;
+            padding-bottom: 10px;
         };
+        .titles {
+            @include font(20px, #1A5276);
+            text-align: center;
+            padding-bottom: 10px;
+        }
         .caja {
             @include flex(flex, center, center);
             flex-direction: column;
             gap: 20px;
+            padding: 25px;
             background-color: #F8C471;
+        };
+        input {
+            height: 25px;
+        };
+        .tipo {
+            height: 25px;
+            width: 200px;
+        };
+        .a {
+            @include flex(flex, center, center);
+            flex-direction: column;
+            .boton {
+                height: 50px;
+                width: 100px;
+                margin: 10px;
+            };
         };
     };
 };
