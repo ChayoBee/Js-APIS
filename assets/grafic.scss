@@ -1,0 +1,39 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+};
+
+@mixin flex ($d, $j, $a) {
+    display: $d;
+    justify-content: $j;
+    align-items: $a;
+};
+
+@mixin font ($t){
+    font-family: Arial;
+    font-size: $t;
+    color: white;
+};
+
+.body {
+    @include flex(flex, center, center);
+    .container {
+        @include flex(flex, center, center);
+        border: 1px solid black;
+        background-color: #1A5276;
+        flex-direction: column;
+        width: 500px;
+        height: 400px;
+        margin-bottom: 20px;
+        .title {
+            @include font(20px);
+        };
+        .caja {
+            @include flex(flex, center, center);
+            flex-direction: column;
+            gap: 20px;
+            background-color: #F8C471;
+        };
+    };
+};

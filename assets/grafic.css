@@ -1,1 +1,35 @@
-/*# sourceMappingURL=grafic.css.map */
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+.body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.body .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  background-color: #1A5276;
+  flex-direction: column;
+  width: 500px;
+  height: 400px;
+  margin-bottom: 20px;
+}
+.body .container .title {
+  font-family: Arial;
+  font-size: 20px;
+  color: white;
+}
+.body .container .caja {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #F8C471;
+}/*# sourceMappingURL=grafic.css.map */

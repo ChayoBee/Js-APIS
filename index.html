@@ -4,13 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheets" href="./assets/grafic.css">
+    <link rel="stylesheet" href="./assets/grafic.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
-    <main>
-        <section>
-            
+<body class="body">
+    <main class="container">
+        <hr class="hr">
+        <h1 class="title">Conversor de monedas Nacional</h1>
+
+        <hr class="hr">
+
+        <section class="caja">
+
+             <div class="de">
+                <h2 class="titles">Pesos CLP</h2>
+                <input type="number" placeholder="Ingrese el monto en CLP" id="inputPesoChile">
+             </div>
+
+             <div class="a">
+                <h3 class="titles">Moneda a convertir:</h3>
+                <select name="conversor" id="conversor" class="tipo">
+                    <option value="" disabled selected>--Seleccione moneda--</option>
+                </select>
+                <button type="button" id="btn" class="boton">Buscar</button>
+            </div>
+
+            <div class="titles" >
+                <h1 id="answer"></h1>
+            </div>
+
         </section>
     </main>
     <div class="grafico">
