@@ -60,4 +60,12 @@
   height: 50px;
   width: 100px;
   margin: 10px;
+}
+.body .container .respuesta {
+  font-family: Arial;
+  font-size: 30px;
+  color: #EF5E27;
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
 }/*# sourceMappingURL=grafic.css.map */

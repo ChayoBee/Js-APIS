@@ -59,5 +59,11 @@
                 margin: 10px;
             };
         };
+        .respuesta {
+            @include font(30px, #EF5E27);
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+        }
     };
 };

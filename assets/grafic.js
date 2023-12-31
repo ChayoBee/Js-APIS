@@ -52,7 +52,6 @@ async function renderResult(url) {
 async function monedaSelec() {
     let selectCoin = selector.value;
     let selectURL = `${endpoint}/${selectCoin}`;
-    
     try {
         const resp = await fetch(selectURL);
         const data = await resp.json();
@@ -67,21 +66,20 @@ async function monedaSelec() {
 async function btnConversor(){
     try {
         if (selector.value != '0'){
-        const ValorCLP = parseInt(inputCLP.value);
-        const selectCoin = await monedaSelec();
-        const selectValor = selectCoin.serie[0].valor;
-
-        if (ValorCLP > 0){
-            const conversion = (ValorCLP / selectValor).toFixed(2);
-      spanResult.innerText = `${selectedCurrency.codigo === 'euro' ? '€' : '$'}${conversion}`
-            answer.innerText = `${selectCoin.codigo === 'euro' ? '€' : '$'} ${conversion}`;
-            renderGrafic();
-        } else {
-            window.alert('Ingresa un número válido');
+            const valorCLP = parseInt(inputCLP.value); //Valor del input
+            const selectCoin = await monedaSelec(); //Datos de la moneda seleccionada
+            const selectValor = selectCoin.serie[0].valor; //Valor de la moneda seleccionada
+            
+            if (valorCLP > 0){
+                const conversion = (valorCLP / selectValor).toFixed(2);
+                answer.innerText = `${selectCoin.codigo === 'euro' ? '€' : '$'} ${conversion}`;
+                renderGrafic();
+            } else {
+                window.alert('Ingresa un número válido');
+            };
         };
-    };
     } catch (error) {
-       window.alert('¡Uy, algo salió mal!');
+        window.alert('¡Uy, algo salió mal!');
     };
 };
 
@@ -89,10 +87,13 @@ async function btnConversor(){
 
 //Grafico
 
-async function getCreatDataChart() {
-    const resp = await monedaSelec();
-    const {serie} = await resp.json();
+//Consigue los datos de la API
 
+async function getCreatDataChart() {
+    const selectCoin = await monedaSelec();
+    const dataResp = await selectCoin.json();
+    
+    console.log(dataResp);
     const labels = serie.map(({fecha}) => {
         return fecha;
     });
@@ -109,6 +110,8 @@ async function getCreatDataChart() {
     return { labels, datasets};
     
 };
+
+// Renderiza la gráfica
 
 async function renderGrafic(){
     const optionSelect =document.getElementById('conversor').value;
