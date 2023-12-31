@@ -19,10 +19,11 @@ inputCLP.addEventListener('input', function(){
 
 //Obtener datos y filtro monedas
 
-async function getMonedas(url){
+async function getMonedas(){
     try {
-        const resp = await fetch(url);
-        const {dolar, uf, euro} = await resp.json();
+        const resp = await fetch(endpoint);
+        const datos = await resp.json();
+        const {dolar, uf, euro} = datos;
         return [dolar, uf, euro];
     } catch (error) {
         window.alert('¡Uy, algo salió mal!');
@@ -74,12 +75,10 @@ async function btnConversor(){
                 const conversion = (valorCLP / selectValor).toFixed(2);
                 answer.innerText = `${selectCoin.codigo === 'euro' ? '€' : '$'} ${conversion}`;
                 renderGrafic();
-            } else {
-                window.alert('Ingresa un número válido');
             };
         };
     } catch (error) {
-        window.alert('¡Uy, algo salió mal!');
+        window.alert('Ingresa un número válido');
     };
 };
 
@@ -90,27 +89,44 @@ async function btnConversor(){
 //Consigue los datos de la API
 
 async function getCreatDataChart() {
-    const selectCoin = await monedaSelec();
-    const dataResp = await selectCoin.json();
+    const tipodeGrafica = 'line';
+    const titulo = 'Historial de Valor';
+    const colorDeLinea = 'red';
+    const conversion = await monedaSelec();
     
-    console.log(dataResp);
-    const labels = serie.map(({fecha}) => {
-        return fecha;
-    });
+    const valores = await conversion.serie.map(moneda => moneda.valor);
 
-    const data = serie.map(({valor}) => {
-        return valor;
-    });
+    const dates = await conversion.serie.map(moneda => moneda.fecha);
+    const typeDate = dates.map(date => date.slice(0, 10));
 
-    const datasets = [{
-        label: 'Precio últimos días',
-        borderColor: 'rgb(255, 99, 132)',
-        data,
-    }];
-    return { labels, datasets};
-    
+    const config = {
+        type: tipodeGrafica,
+        data: {
+            labels: typeDate,
+            datasets: [{
+                label: titulo,
+                backgroundColor: colorDeLinea,
+                data: valores
+            }
+        ]
+        }
+    };
+    return config;
 };
 
+async function renderGrafic() {
+    //const monedas = await getMonedas();
+    const config = await getCreatDataChart();
+    const chartDOM = document.getElementById('myChart');
+    
+    if (myChart) {
+        myChart.destroy();
+    };
+    myChart = new Chart(chartDOM, config);
+};
+
+
+/*
 // Renderiza la gráfica
 
 async function renderGrafic(){
@@ -131,5 +147,5 @@ async function renderGrafic(){
 
     myChart = new Chart(canvas, config);
 };
-
+*/
 renderResult(endpoint);
